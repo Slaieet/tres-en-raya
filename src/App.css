@@ -3,6 +3,7 @@
   margin: 0;
   padding: 0;
   color: #fafafa;
+  font-family: monospace;
 }
 
 body {
@@ -24,4 +25,23 @@ body {
 .turns .square {
   height: 80px;
   width: 80px;
+}
+
+.absolute-center {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  border: 2px solid #fafafa;
+}
+
+.winner .square {
+  border: 2px solid #fafafa;
+}
+
+@media (width < 320px) {
+  .game .square {
+    height: 70px;
+    width: 70px;
+  }
 }
