@@ -4,7 +4,7 @@ export default function Square({ children, isSelected, index, updateBoard }) {
 
     return (
         <div className={className} onClick={() => updateBoard(index)}>
-            <strong className="text-[2.5rem]">{children}</strong>
+            <strong className="text-[3rem]">{children}</strong>
         </div>
     )
 }
