@@ -1,5 +1,6 @@
-import { createPortal } from "react-dom"
-import Square from "../components/Square"
+import { createPortal } from "react-dom";
+import Square from "../components/Square";
+import ResetButton from "../components/ResetButton";
 
 export default function EndGame({ winner, resetGame }) {
 
@@ -15,12 +16,7 @@ export default function EndGame({ winner, resetGame }) {
 
         {(winner !== "Empate") ? <Square>{winner}</Square> : null}
 
-        <button 
-        className="p-2 border-solid border-wOnDark border-[2px] rounded-lg hover:bg-[#575757]"
-        onClick={resetGame}
-        >
-            Empezar de nuevo
-        </button>
+        <ResetButton resetGame={resetGame}>Empezar de nuevo</ResetButton>
     </section>
     , document.getElementById("onFinish"))
 }

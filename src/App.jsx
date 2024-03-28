@@ -1,4 +1,5 @@
 import Square from './components/Square';
+import ResetButton from './components/ResetButton.jsx';
 import EndGame from './modals/EndGame';
 import confetti from "canvas-confetti";
 
@@ -54,11 +55,13 @@ function App() {
     window.localStorage.removeItem("turn");
   }
 
-  const mainStyles = "flex justify-center items-center h-screen flex-col gap-10 min-h-[600px]";
+  const mainStyles = "flex justify-center items-center h-screen flex-col gap-5 min-h-[600px]";
 
   return (
     <main className={(winner) ? `${mainStyles} blur-sm` : mainStyles}>
       <h1 className='text-[2.5rem] font-bold'>Tic tac toe</h1>
+
+      <ResetButton resetGame={resetGame}>Reiniciar</ResetButton>
 
       <section className='game'>
         {board.map((pos, index) => {
