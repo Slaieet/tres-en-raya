@@ -5,27 +5,20 @@ import confetti from "canvas-confetti";
 import { useState } from "react";
 import './App.css';
 
-import { TURNS, WINNER_COMBOS } from "./constants.js";
+import { TURNS } from "./constants.js";
+import { checkWinner, checkEndGame } from "./logic/board.js";
 
 function App() {
 
-  const [ board, setBoard ] = useState(Array(9).fill(null));
-  const [ turn, setTurn ] = useState(TURNS.X);
+  const [ board, setBoard ] = useState(() => {
+    const boardFromStorage = window.localStorage.getItem("board");
+    return (boardFromStorage) ? JSON.parse(boardFromStorage) : Array(9).fill(null);
+  });
+  const [ turn, setTurn ] = useState(() => {
+    const turnFromStorage = window.localStorage.getItem("turn");
+    return turnFromStorage ?? TURNS.X;
+  });
   const [ winner, setWinner ] = useState(null);
-
-  const checkWinner = (boardToCheck) => {
-    for ( const combo of WINNER_COMBOS ) {
-      const [ a, b, c ] = combo;
-      if (
-        boardToCheck[a] &&
-        boardToCheck[a] === boardToCheck[b] &&
-        boardToCheck[a] === boardToCheck[c]
-      ) {
-        return boardToCheck[a];
-      }
-    }
-    return null
-  }
 
   const updateBoard = (position) => {
 
@@ -38,6 +31,10 @@ function App() {
     const newTurn = (turn === TURNS.X) ? TURNS.O : TURNS.X;
     setTurn(newTurn);
   
+    // save on localStorage
+    window.localStorage.setItem("board", JSON.stringify(newBoard));
+    window.localStorage.setItem("turn", newTurn);
+
     // newWinner
     const newWinner = checkWinner(newBoard);
     if (newWinner) {
@@ -52,10 +49,9 @@ function App() {
     setBoard(Array(9).fill(null));
     setTurn(TURNS.X);
     setWinner(null);
-  }
 
-  const checkEndGame = (newBoard) => {
-    return newBoard.every(square => square !== null)
+    window.localStorage.removeItem("board");
+    window.localStorage.removeItem("turn");
   }
 
   const mainStyles = "flex justify-center items-center h-screen flex-col gap-10 min-h-[600px]";
@@ -84,9 +80,7 @@ function App() {
         </Square>
       </section>
 
-      {winner && (
-        <EndGame winner={winner} resetGame={resetGame} />
-      )}
+      <EndGame winner={winner} resetGame={resetGame} />
 
     </main>
   )
