@@ -1,13 +1,19 @@
+// components
 import Square from './components/Square';
 import ResetButton from './components/ResetButton.jsx';
 import EndGame from './modals/EndGame';
+
+// dependencies
 import confetti from "canvas-confetti";
 
+// react and css
 import { useState } from "react";
 import './App.css';
 
+// logic and more
 import { TURNS } from "./constants.js";
 import { checkWinner, checkEndGame } from "./logic/board.js";
+import { saveOnStorage, removeOnStorage } from "./logic/localStorage.js";
 
 function App() {
 
@@ -33,16 +39,20 @@ function App() {
     setTurn(newTurn);
   
     // save on localStorage
-    window.localStorage.setItem("board", JSON.stringify(newBoard));
-    window.localStorage.setItem("turn", newTurn);
+    saveOnStorage({
+      board: newBoard,
+      turn: newTurn
+    });
 
     // newWinner
     const newWinner = checkWinner(newBoard);
     if (newWinner) {
       setWinner(newWinner);
       confetti();
+      removeOnStorage();
     } else if (checkEndGame(newBoard)) {
       setWinner("Empate");
+      removeOnStorage();
     }
   }
 
@@ -51,15 +61,14 @@ function App() {
     setTurn(TURNS.X);
     setWinner(null);
 
-    window.localStorage.removeItem("board");
-    window.localStorage.removeItem("turn");
+    removeOnStorage();
   }
 
   const mainStyles = "flex justify-center items-center h-screen flex-col gap-5 min-h-[600px]";
 
   return (
     <main className={(winner) ? `${mainStyles} blur-sm` : mainStyles}>
-      <h1 className='text-[2.5rem] font-bold'>Tic tac toe</h1>
+      <h1 className='text-[2.5rem] font-bold'>Tres en raya</h1>
 
       <ResetButton resetGame={resetGame}>Reiniciar</ResetButton>
 

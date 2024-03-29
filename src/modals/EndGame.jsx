@@ -6,7 +6,7 @@ export default function EndGame({ winner, resetGame }) {
 
     if (winner === null) return null;
 
-    const winnerText = (winner === "Empate") ? "Empate" : "Gano:";
+    const winnerText = (winner === "Empate") ? "Empate" : "Ganó:";
 
     return createPortal(
     <section className="absolute-center rounded-[8px] p-10 bg-[#0f0f0f] w-[350px] winner gap-10 flex flex-col items-center">
